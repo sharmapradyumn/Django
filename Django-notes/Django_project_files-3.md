@@ -26,3 +26,4 @@ python manage.py project_name
 2. Template====>html,css,javascript,DTL(its contain all of these)
 
 ## ORM(Object Relational Mapper)
+### work on

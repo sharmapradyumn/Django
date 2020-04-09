@@ -1,0 +1,108 @@
+
+sudo apt-get update
+sudo apt-get install python3-pip python-dev nginx git
+
+Y
+
+sudo apt-get update
+sudo pip3 install virtualenv
+git clone https://github.com/mruanova/zillow.git
+cd Quiz-Mania-Project1_V2/QuizMania
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip3 install django bcrypt django-extensions
+pip3 install gunicorn
+cd QuizMania
+sudo vim settings.py
+
+
+# Inside settings.py modify these lines allowed host public IP address I for INSERT
+
+i
+
+
+ALLOWED_HOSTS = ['54.80.215.41']
+
+# add the line below to the bottom of the file
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
+Save your changes and quit. ESC :wq
+
+cd .. 
+python3 manage.py collectstatic
+gunicorn --bind 0.0.0.0:8000 QuizMania.wsgi:application
+
+ctrl+c
+
+sudo vim /etc/systemd/system/gunicorn.service
+
+i
+
+[Unit]
+Description=gunicorn daemon
+After=network.target
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/Quiz-Mania-Project1_V2/QuizMania
+ExecStart=/home/ubuntu/Quiz-Mania-Project1_V2/QuizMania/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Quiz-Mania-Project1_V2/QuizMania/QuizMania.sock QuizMania.wsgi:application
+[Install]
+WantedBy=multi-user.target
+
+ESC :wq
+
+sudo systemctl daemon-reload
+sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
+sudo vim /etc/nginx/sites-available/QuizMania
+
+i
+
+server {
+  listen 80;
+  server_name 18.208.168.19;
+  location = /favicon.ico { access_log off; log_not_found off; }
+  location /static/ {
+      root /home/ubuntu/Quiz-Mania-Project1_V2/QuizMania;
+  }
+  location / {
+      include proxy_params;
+      proxy_pass http://unix:/home/ubuntu/Quiz-Mania-Project1_V2/QuizMania/QuizMania.sock;
+  }
+}
+
+ESC :wq
+
+sudo ln -s /etc/nginx/sites-available/Quiz-Mania-Project1_V2/QuizMania /etc/nginx/sites-enabled
+sudo nginx -t
+sudo rm /etc/nginx/sites-enabled/default
+sudo service nginx restart
+
+http://54.80.215.41
+
+
+
+Something impressive that i built or achieved independently is my project "Quiz Mania"."Quiz Mania" is a  web platform where anyone can  organize exam for their employ ,students . On "Quiz Mania"  anyone can upload Mcq's Question and generate a test . I have independently built the backend  of my project in Django framework and learn how things work and all about the dbsqllite3  database that i used to store the user  information & I used nginx web server on AWS ubuntu instance to host my web application. 
+Something i achieved as a part of a team is my  Winning Hackethon project "Safe Tourism"."Safe Tourism" is a project for developing Indian Tourism sector. We have build a solution to count the number of tourist in a specific part of a tourist place.We are counting people by using our Human Detection System and plotting density graph on the heritage place map, which helps tourist to plan their trips and helps rescue forces to identify people in case of emergencies.
+Installation Requirements and Guidelines for our project are:-
+->Since this project is for human detection as such we need set of cameras to run this project.
+->To run this system you need some packages pre-installed
+Python
+Python-dev tools
+OpensCV
+Keras
+Tensorflow
+Numpy, Pandas, Matplotlib
+MariaDB
+The detection.py file  in our project is use an alogorithm to detect human beings using the video foutage provided by the video cameras attached to the system.
+The file will generate a count and send this via a socket to the another system.
+On the other hand the system hosted on AWS will receive the count via a socket within the project.py file.
+The file will apply colors on the map which will represent the density of the crowd in a particular place of the Installed site.
+The website login page is hosted on the AWS /var/www/html and it uses the user login credentials to create a docker container with a random available port and redirects the docker container as a website to the user.
+As such every user accessing the website is isolated in the docker container.
+The website contains an iframe of map which refresh itself every 10 seconds to update the density plot on it.
+The map is an image which is dynamically updated by the project.py as per the change in density.
+The role that i played  in my team is "Socket Programmer and  Team Management"
+Repo Link---"https://github.com/sharmapradyumn/Hamara-Paryatan-Katai-Jahar"
