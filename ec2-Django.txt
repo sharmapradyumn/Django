@@ -75,7 +75,7 @@ server {
 
 ESC :wq
 
-sudo ln -s /etc/nginx/sites-available/Quiz-Mania-Project1_V2/QuizMania /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/QuizMania /etc/nginx/sites-enabled
 sudo nginx -t
 sudo rm /etc/nginx/sites-enabled/default
 sudo service nginx restart
